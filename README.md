@@ -13,7 +13,7 @@ The additional test verifies the existence of a 'feed-count-header' element and 
 To use this project:
 
   1. Clone the repository: git@github.com:jmurphyjr/fend-feedreader.git
-  2. Open the (index.html)[./index.html] file in a web browser.
+  2. Open the [index.html](./index.html) file in a web browser.
   
-or, feel free to visit: jmurphyjr.github.io/fend-feedreader
+or, feel free to visit: [jmurphyjr.github.io/fend-feedreader](jmurphyjr.github.io/fend-feedreader)
 
