@@ -26,33 +26,67 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
+        describe('allfeeds', function() {
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
 
+          it('url attribute exists and is not empty', function() {
+            allFeeds.forEach(function(f) {
+              expect(f.url).toBeDefined();
+              expect(f.url.length).not.toBe(0);
+            });
+          });
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+          it('name attribute exists and is not empty', function() {
+            allFeeds.forEach(function(f) {
+              expect(f.name).toBeDefined();
+              expect(f.name.length).not.toBe(0);
+            });
+          });
+        });
     });
 
 
     /* TODO: Write a new test suite named "The menu" */
+
+    describe('The menu', function() {
+        var body;
+        beforeEach(function() {
+            body = document.getElementsByTagName('body')[0];
+        });
 
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+        it('should be hidden by default', function() {
+            expect(body.classList.contains('menu-hidden')).toBe(true);
+        });
 
          /* TODO: Write a test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+        it('should display when menu hamburger is clicked', function() {
+            // First verify menu is visible when clicked.
+            $('.menu-icon-link').click();
+            expect(body.classList.contains('menu-hidden')).toBe(false);
+
+            // Now test the menu is hidden when clicked.
+            $('.menu-icon-link').click();
+            expect(body.classList.contains('menu-hidden')).toBe(true);
+        });
+
+    });
 
     /* TODO: Write a new test suite named "Initial Entries" */
 
@@ -62,6 +96,28 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test wil require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+    describe('Initial Entries', function() {
+
+        beforeEach(function(done) {
+
+            loadFeed(0,function() {
+                done();
+            });
+        });
+
+        describe('feed container', function() {
+            var feedContainer;
+            beforeEach(function() {
+                feedContainer = document.getElementsByClassName('feed')[0];
+            });
+
+            it('should have at least one element', function() {
+                var entries = feedContainer.getElementsByClassName('entry');
+                expect(entries.length > 0).toBe(true);
+            })
+
+        });
+    });
 
     /* TODO: Write a new test suite named "New Feed Selection"
 
@@ -69,4 +125,38 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+    describe('New Feed Selection', function() {
+
+        var beforeLoadEntries;
+        var elements;
+        beforeEach(function(done) {
+            loadFeed(0, function() {
+                elements = document.getElementsByClassName('entry-link');
+                beforeLoadEntries = [].map.call(elements, function(v) {
+                    return [v.getAttribute('href'), v.getElementsByTagName('h2')[0].innerText];
+                });
+                done();
+            });
+        });
+
+        describe('content changes', function() {
+            var afterReloadEntries;
+            beforeEach(function(done) {
+                loadFeed(1, function() {
+                    elements = document.getElementsByClassName('entry-link');
+                    afterReloadEntries = [].map.call(elements, function(v) {
+                        return [v.getAttribute('href'), v.getElementsByTagName('h2')[0].innerText];
+                    });
+                    done();
+                })
+            });
+
+            it('when new feed selected', function() {
+                expect(beforeLoadEntries).not.toEqual(afterReloadEntries);
+
+            })
+        });
+
+
+    })
 }());
