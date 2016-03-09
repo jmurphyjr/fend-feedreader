@@ -57,11 +57,13 @@ function loadFeed(id, cb) {
              */
             var container = $('.feed'),
                 title = $('.header-title'),
+                feedCount = $('.feed-count-header'),
                 entries = result.feed.entries,
                 entriesLen = entries.length,
                 entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
             title.html(feedName);   // Set the header text
+            feedCount.html(entries.length);
             container.empty();      // Empty out all previous entries
 
             /* Loop through the entries we just loaded via the Google

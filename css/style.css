@@ -44,6 +44,10 @@ h2 {
     padding: 0.5em 1em;
 }
 
+.feed-count-header {
+    padding: 0 2em;
+    font-weight: 400;
+}
 .icon-list {
     font-size: 1.5em;
     color: #FFF;

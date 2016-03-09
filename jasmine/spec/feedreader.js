@@ -129,8 +129,10 @@ $(function() {
 
         var beforeLoadEntries;
         var elements;
+
         beforeEach(function(done) {
-            loadFeed(0, function() {
+            // Load Feed 3
+            loadFeed(3, function() {
                 elements = document.getElementsByClassName('entry-link');
                 beforeLoadEntries = [].map.call(elements, function(v) {
                     return [v.getAttribute('href'), v.getElementsByTagName('h2')[0].innerText];
@@ -139,9 +141,21 @@ $(function() {
             });
         });
 
+        // Reload the default feed after all tests are complete
+        afterEach(function(done) {
+            loadFeed(0, done);
+        });
+
+        it('Feed 3 has elements before new feed loaded', function() {
+            expect(beforeLoadEntries.length > 0).toBe(true);
+        });
+
         describe('content changes', function() {
+
             var afterReloadEntries;
+
             beforeEach(function(done) {
+
                 loadFeed(1, function() {
                     elements = document.getElementsByClassName('entry-link');
                     afterReloadEntries = [].map.call(elements, function(v) {
@@ -156,7 +170,23 @@ $(function() {
 
             })
         });
+    });
 
+    describe('Feed Count in Header', function() {
+        var feedCount;
+        beforeEach(function() {
+            feedCount = document.getElementsByClassName('feed-count-header');
+        });
 
+        it('should exist', function() {
+
+            expect(feedCount).toBeDefined();
+        });
+
+        it('should equal number of entries for feed', function() {
+            var entries = document.getElementsByClassName('entry');
+
+            expect(Number(feedCount[0].innerText)).toEqual(entries.length);
+        })
     })
 }());
